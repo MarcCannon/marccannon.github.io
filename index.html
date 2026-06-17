@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Portfolio Board — Marc C.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=Oswald:wght@500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #eef4f7;
+    --paper: #ffffff;
+    --ink: #111827;
+    --soft: #6b7280;
+    --line: #dbe6ec;
+    --line-strong: #aebfc9;
+    --primary: #33bdef;
+    --primary-dark: #2196d3;
+    --secondary: #6366f1;
+    --accent: #2196d3;
+    --accent-ink: #1a6ea3;
+    --tape: #f59e0b;
+    --radius: 6px;
+  }
+
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation-duration: 0.25s;
+    animation-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Space Grotesk", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0.5;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E");
+  }
+
+  .ink-hand {
+    font-family: "Caveat", cursive;
+    font-weight: 600;
+  }
+
+  .marker {
+    background-image: linear-gradient(rgba(245,158,11,0.55), rgba(245,158,11,0.55));
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    padding: 0 4px;
+    border-radius: 2px;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+
+  .wrap {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 34px 26px 90px;
+  }
+
+  header.top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    padding-bottom: 22px;
+    border-bottom: 2px solid var(--ink);
+    margin-bottom: 40px;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .brand .mark {
+    height: 52px;
+    width: auto;
+    display: block;
+    transform: rotate(-3deg);
+    margin-left: -6px;
+  }
+
+  .brand h1 {
+    font-family: "Fraunces", serif;
+    font-size: 20px;
+    margin: 0;
+    font-weight: 800;
+  }
+
+  .brand p {
+    margin: 1px 0 0;
+    font-size: 13px;
+    color: var(--soft);
+  }
+
+  .cta {
+    display: inline-flex;
+    align-items: center;
+    padding: 12px 22px;
+    background: var(--ink);
+    color: var(--paper);
+    font-weight: 600;
+    font-size: 14px;
+    text-decoration: none;
+    border-radius: 225px 12px 220px 14px / 14px 200px 12px 225px;
+    transform: rotate(-0.6deg);
+    transition: background 0.15s ease, transform 0.15s ease;
+  }
+
+  .cta:hover { background: var(--accent); transform: rotate(0deg) translateY(-1px); }
+
+  .hero {
+    display: grid;
+    grid-template-columns: 1.7fr 1fr;
+    gap: 50px;
+    align-items: end;
+    margin-bottom: 46px;
+  }
+
+  .hero .eyebrow {
+    display: inline-block;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent-ink);
+    margin-bottom: 16px;
+    font-weight: 600;
+  }
+
+  .hero h2 {
+    font-family: "Fraunces", serif;
+    margin: 0 0 16px;
+    font-size: clamp(34px, 5.4vw, 60px);
+    line-height: 0.98;
+    font-weight: 800;
+    letter-spacing: -1px;
+  }
+
+  .hero h2 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .hero p.lede {
+    margin: 0;
+    color: var(--soft);
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  .persona {
+    border-left: 2px solid var(--ink);
+    padding-left: 18px;
+  }
+
+  .persona .label {
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--soft);
+    margin-bottom: 14px;
+  }
+
+  .persona-btns {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .pbtn {
+    border: none;
+    background: none;
+    color: var(--soft);
+    padding: 6px 0;
+    cursor: pointer;
+    text-align: left;
+    font-family: "Fraunces", serif;
+    font-size: 19px;
+    font-weight: 600;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    transition: color 0.15s ease;
+  }
+
+  .pbtn:hover { color: var(--ink); }
+
+  .pbtn .idx {
+    font-family: "Space Grotesk", sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--line-strong);
+  }
+
+  .pbtn.active { color: var(--accent); }
+  .pbtn.active .idx { color: var(--accent); }
+
+  .scribble {
+    font-family: "Caveat", cursive;
+    font-size: 17px;
+    color: var(--accent-ink);
+    margin-top: 12px;
+    transform: rotate(-2deg);
+    opacity: 0.85;
+  }
+
+  .pitch {
+    position: relative;
+    z-index: 3;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 220px 8px 200px 10px / 10px 180px 8px 210px;
+    padding: 20px 22px 18px;
+    font-size: 15px;
+    line-height: 1.6;
+    margin: 14px 0 36px;
+    max-width: 700px;
+    transform: rotate(-0.5deg);
+    box-shadow: 3px 4px 0 rgba(24,20,16,0.05);
+  }
+
+  .pitch::after {
+    content: "";
+    position: absolute;
+    top: -13px;
+    left: 50%;
+    width: 96px;
+    height: 26px;
+    transform: translateX(-50%) rotate(-2.5deg);
+    background: rgba(245,158,11,0.5);
+    border-left: 1px dashed rgba(160,120,30,0.25);
+    border-right: 1px dashed rgba(160,120,30,0.25);
+  }
+
+  .pitch strong { color: var(--ink); }
+
+  .board-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .board-head h3 {
+    font-family: "Fraunces", serif;
+    margin: 0;
+    font-size: 26px;
+    font-weight: 800;
+  }
+
+  .board-head .hint { font-size: 18px; color: var(--accent-ink); transform: rotate(-1.5deg); display: inline-block; }
+
+  .board-stage { position: relative; }
+
+  .board {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1.15fr 1fr 1fr 1fr;
+    gap: 18px;
+  }
+
+  .col {
+    border-top: 2px solid var(--ink);
+    padding-top: 12px;
+    border-radius: 4px;
+    transition: background 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .col:nth-child(2) { margin-top: 16px; }
+  .col:nth-child(4) { margin-top: 10px; }
+
+  .lane {
+    min-height: 90px;
+    padding-top: 16px;
+  }
+
+  .col-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+
+  .col-head .name {
+    font-family: "Oswald", sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #b23a1f;
+    border: 2.5px solid #b23a1f;
+    border-radius: 3px;
+    padding: 2px 9px 1px;
+    transform: rotate(-2.5deg);
+    opacity: 0.85;
+    mix-blend-mode: multiply;
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='40'%3E%3Cfilter id='r'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.45' numOctaves='2'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 5 -1.2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23r)'/%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='40'%3E%3Cfilter id='r'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.45' numOctaves='2'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 5 -1.2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23r)'/%3E%3C/svg%3E");
+    -webkit-mask-size: 160% 160%;
+    mask-size: 160% 160%;
+  }
+
+  .col:nth-child(2) .col-head .name { transform: rotate(1.5deg); color: #6366f1; border-color: #6366f1; }
+  .col:nth-child(3) .col-head .name { transform: rotate(-1.5deg); }
+  .col:nth-child(4) .col-head .name { transform: rotate(2deg); color: #6366f1; border-color: #6366f1; }
+
+  .col-head .count {
+    font-family: "Fraunces", serif;
+    font-size: 15px;
+    color: var(--soft);
+  }
+
+  .card {
+    position: relative;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 16px 15px 14px;
+    margin: 0 0 30px;
+    cursor: grab;
+    box-shadow: 0 1px 3px rgba(17,24,39,0.06), 0 6px 16px -10px rgba(17,24,39,0.18);
+    transition: transform 0.16s cubic-bezier(0.19,1,0.22,1), box-shadow 0.16s ease;
+    --tilt: -0.6deg;
+    transform: rotate(var(--tilt));
+    z-index: 1;
+  }
+
+  .card:last-child { margin-bottom: 8px; }
+
+  .card:hover {
+    transform: rotate(0deg) translateY(-6px) scale(1.035);
+    box-shadow: 0 0 0 2px rgba(51,189,239,0.55), 0 18px 34px -10px rgba(51,189,239,0.35);
+    z-index: 5;
+  }
+
+  .card.dragging {
+    cursor: grabbing;
+    opacity: 0.95;
+    transform: rotate(3deg) scale(1.05);
+    box-shadow: 0 0 0 2px rgba(51,189,239,0.6), 0 24px 44px -10px rgba(17,24,39,0.4);
+    z-index: 50;
+  }
+
+  .col.drop-target {
+    background: rgba(51,189,239,0.06);
+    box-shadow: inset 0 0 0 2px rgba(51,189,239,0.35);
+  }
+
+  .card .fasten {
+    position: absolute;
+    top: -11px;
+    left: 50%;
+    transform: translateX(-50%);
+    pointer-events: none;
+    z-index: 4;
+  }
+
+  .card.paper-tape .fasten {
+    width: 78px;
+    height: 24px;
+    background: rgba(245,158,11,0.55);
+    border-left: 1px dashed rgba(160,120,30,0.3);
+    border-right: 1px dashed rgba(160,120,30,0.3);
+    transform: translateX(-50%) rotate(-3deg);
+  }
+
+  .card.paper-pin .fasten {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #ff8a7a, #d0341c 70%);
+    box-shadow: 1px 2px 3px rgba(0,0,0,0.35), inset -1px -1px 2px rgba(0,0,0,0.3);
+    top: -8px;
+  }
+
+  .card.paper-clip .fasten {
+    top: -10px;
+    left: 20px;
+    transform: rotate(4deg);
+    width: 16px;
+    height: 30px;
+    border: 2px solid #9aa0aa;
+    border-radius: 8px;
+    border-bottom: none;
+    background: transparent;
+    box-shadow: 1px 1px 1px rgba(0,0,0,0.18);
+  }
+
+  .card.paper-clip .fasten::after {
+    content: "";
+    position: absolute;
+    top: 5px;
+    left: 2px;
+    right: 2px;
+    height: 19px;
+    border: 1.6px solid #b8bdc6;
+    border-radius: 6px;
+    border-bottom: none;
+  }
+
+  .card .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+
+  .tag {
+    font-size: 11px;
+    letter-spacing: 0.4px;
+    padding: 2px 9px;
+    border: 1px solid var(--line);
+    color: var(--soft);
+    border-radius: 30px 8px 26px 8px / 8px 26px 8px 30px;
+  }
+
+  .tag.platform {
+    color: var(--paper);
+    background: var(--ink);
+    border-color: var(--ink);
+  }
+
+  .card h4 {
+    font-family: "Fraunces", serif;
+    margin: 0 0 6px;
+    font-size: 17px;
+    line-height: 1.2;
+    font-weight: 700;
+  }
+
+  .card .goal {
+    font-size: 13px;
+    color: var(--soft);
+    line-height: 1.5;
+  }
+
+  .metric-line {
+    position: relative;
+    margin-top: 13px;
+    padding-bottom: 10px;
+    line-height: 1.5;
+  }
+
+  .card .owner {
+    display: inline-block;
+    font-family: "Space Grotesk", sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 999px;
+    margin-bottom: 9px;
+  }
+
+  .card .owner.own-evl { color: #1a6ea3; background: rgba(51,189,239,0.15); }
+  .card .owner.own-sbc { color: #4f46e5; background: rgba(99,102,241,0.15); }
+  .card .owner.own-personal { color: #b45309; background: rgba(245,158,11,0.18); }
+
+  .card .metric {
+    display: inline;
+    font-family: "Caveat", cursive;
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--accent-ink);
+    background-image: linear-gradient(transparent 12%, rgba(245,158,11,0.55) 12%, rgba(245,158,11,0.55) 88%, transparent 88%);
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+    padding: 0 3px;
+  }
+
+  .card .detail {
+    display: none;
+    margin-top: 13px;
+    padding-top: 13px;
+    border-top: 1px dashed var(--line);
+    font-size: 13px;
+    color: var(--soft);
+    line-height: 1.6;
+  }
+
+  .card.open .detail { display: block; }
+
+  .card .detail .row {
+    display: grid;
+    grid-template-columns: 72px 1fr;
+    gap: 10px;
+    padding: 4px 0;
+    align-items: start;
+  }
+
+  .card .detail .row > span:first-child {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .card .detail .row > span:last-child {
+    text-align: left;
+    word-break: break-word;
+  }
+
+  .card .detail .actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 14px;
+    margin-top: 12px;
+  }
+
+  .card .detail a.link {
+    color: var(--accent);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    font-size: 13px;
+  }
+
+  .card .detail button.demo-btn {
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--paper);
+    background: var(--accent);
+    border: none;
+    border-radius: 999px;
+    padding: 6px 13px;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.12s ease;
+  }
+
+  .card .detail button.demo-btn:hover {
+    background: var(--primary-dark);
+    transform: translateY(-1px);
+  }
+
+  .demo-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+
+  .demo-modal.show { display: flex; }
+
+  .demo-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(17,24,39,0.78);
+    backdrop-filter: blur(3px);
+  }
+
+  .demo-box {
+    position: relative;
+    z-index: 1;
+    width: auto;
+    max-width: 100%;
+    background: #141821;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 30px 70px -20px rgba(0,0,0,0.7);
+  }
+
+  .demo-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    background: #141821;
+    color: #f2f4f8;
+  }
+
+  .demo-cap {
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .demo-close {
+    background: none;
+    border: none;
+    color: #f2f4f8;
+    font-size: 26px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0 4px;
+  }
+
+  .demo-close:hover { color: var(--primary); }
+
+  .demo-box video {
+    display: block;
+    height: min(82vh, calc((100vw - 48px) * 16 / 9));
+    width: auto;
+    max-width: 100%;
+    aspect-ratio: 9 / 16;
+    object-fit: contain;
+    background: #000;
+  }
+
+  .card .detail .row del {
+    color: var(--line-strong);
+    text-decoration-color: var(--accent);
+    margin-right: 6px;
+  }
+
+  .card .detail .row .fix {
+    font-family: "Caveat", cursive;
+    font-size: 16px;
+    color: var(--accent-ink);
+    transform: rotate(-2deg);
+    display: inline-block;
+  }
+
+  .doodle {
+    position: absolute;
+    pointer-events: none;
+    overflow: visible;
+  }
+
+  .doodle path { fill: none; stroke: var(--accent); stroke-width: 2.4; stroke-linecap: round; }
+
+  .doodle-underline {
+    bottom: -6px;
+    left: 0;
+    width: 90px;
+    height: 12px;
+  }
+
+
+  .empty {
+    font-size: 12.5px;
+    color: var(--line-strong);
+    padding: 14px 4px;
+    font-style: italic;
+  }
+
+  footer.foot {
+    margin-top: 56px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 2px solid var(--ink);
+    padding-top: 22px;
+    color: var(--soft);
+    font-size: 13px;
+  }
+
+  footer.foot .links { display: flex; gap: 20px; flex-wrap: wrap; }
+  footer.foot a { text-decoration: none; color: var(--ink); font-weight: 600; }
+  footer.foot a:hover { color: var(--accent); }
+
+  @media (max-width: 940px) {
+    .hero { grid-template-columns: 1fr; gap: 30px; align-items: start; }
+    .board { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 560px) {
+    .board { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div class="brand">
+      <img class="mark" src="assets/MCsignature.png" alt="Marc C signature" />
+      <div>
+        <h1>The Portfolio Board</h1>
+        <p><span class="ink-hand" style="font-size:16px;color:var(--accent-ink)">Marc C</span> &middot; Social Media Manager &amp; Business Owner</p>
+      </div>
+    </div>
+    <a class="cta" href="https://www.evolvedlotus.com/#cusection" target="_blank" rel="noopener">Book a strategy call</a>
+  </header>
+
+  <section class="hero">
+    <div>
+      <span class="eyebrow">Live project board</span>
+      <h2>Real brands. <em class="marker">Real</em> products.</h2>
+      <p class="lede">I&rsquo;m Marc. I run EvolvedLotus &mdash; and a bunch of brands, tools, and games underneath it all. This board shows exactly what I've built and actually gotten out there. Tell me who you are &mdash; it shifts automatically to highlight the thing that matters most to <em>you</em>.</p>
+    </div>
+    <div class="persona">
+      <div class="label">I'm here as a</div>
+      <div class="persona-btns" id="personas">
+        <button class="pbtn active" data-persona="client"><span class="idx">01</span> Potential client</button>
+        <button class="pbtn" data-persona="brand"><span class="idx">02</span> Brand or agency</button>
+        <button class="pbtn" data-persona="creator"><span class="idx">03</span> Fellow creator</button>
+      </div>
+      <div class="scribble">pick one &mdash; the board flips for you</div>
+    </div>
+  </section>
+
+  <div class="pitch" id="pitch"></div>
+
+  <div class="board-head">
+    <h3 id="boardTitle">The pipeline</h3>
+    <div class="hint ink-hand">tap a card to flip the brief over</div>
+  </div>
+
+  <div class="board-stage" id="boardStage">
+    <div class="board" id="board"></div>
+  </div>
+
+  <footer class="foot">
+    <div>Marc C &middot; built and run by hand &middot; 2026</div>
+    <div class="links">
+      <a href="https://www.evolvedlotus.com" target="_blank" rel="noopener">EvolvedLotus</a>
+      <a href="https://sbc-media.blogspot.com/" target="_blank" rel="noopener">SBC | RSS</a>
+      <a href="https://www.evolvedlotus.com/#cusection" target="_blank" rel="noopener">Contact</a>
+    </div>
+  </footer>
+
+</div>
+
+<div class="demo-modal" id="demoModal">
+  <div class="demo-backdrop" data-close="1"></div>
+  <div class="demo-box">
+    <div class="demo-bar">
+      <span class="demo-cap" id="demoTitle">Demo</span>
+      <button class="demo-close" id="demoClose" aria-label="Close">&times;</button>
+    </div>
+    <video id="demoVideo" controls playsinline preload="metadata"></video>
+  </div>
+</div>
+
+<script>
+  const STAGES = [
+    { key: "idea", label: "Concept" },
+    { key: "built", label: "Built" },
+    { key: "live", label: "Live" },
+    { key: "results", label: "Results" }
+  ];
+
+  const PERSONAS = {
+    client: {
+      title: "What I can do for your brand",
+      pitch: "<strong>You want results.</strong> Every card is something real and shipped &mdash; AI tools, content, games, and a whole marketing brand. Each one leads with what it does for the people who use it.",
+      order: ["results", "live", "built", "idea"]
+    },
+    brand: {
+      title: "Brands, tools & products I run",
+      pitch: "<strong>You want systems.</strong> EvolvedLotus is the parent brand; it bought SBC | RSS, which owns its own product line. These are repeatable engines &mdash; each card shows the brand it sits under and the stack behind it.",
+      order: ["live", "results", "built", "idea"]
+    },
+    creator: {
+      title: "The build behind each one",
+      pitch: "<strong>You want the how.</strong> Open any card for the platform, stack, and approach &mdash; from offline-AI desktop apps to Telegram mini-games and TikTok Live tools. Take what's useful.",
+      order: ["idea", "live", "built", "results"]
+    }
+  };
+
+  const PROJECTS = [
+    {
+      id: "evolvedlotus",
+      owner: "EvolvedLotus",
+      name: {
+        client: "EvolvedLotus — Your Digital Growth Partner",
+        brand: "EvolvedLotus — Multi-Platform Brand & Tooling Hub",
+        creator: "EvolvedLotus — How I Run a Whole Ecosystem Solo"
+      },
+      stage: "live",
+      platforms: ["Web", "SEO", "Multi-platform"],
+      goal: {
+        client: "Helps businesses grow online with marketing, AI tools, and community management in one place.",
+        brand: "The parent brand that ties every tool, product, and channel into one growth ecosystem.",
+        creator: "Gives creators free tools and content that make growing a brand easier and cheaper."
+      },
+      metric: {
+        client: "One partner, full stack",
+        brand: "4 product lines, 1 brand",
+        creator: "Solo-run ecosystem"
+      },
+      brief: {
+        Platform: "evolvedlotus.com + subdomains",
+        Goal: "Elevate business success with ease",
+        Outcome: "Live marketing & services hub",
+        Stack: "Web, SEO, Gemini AI, Stripe"
+      },
+      link: "https://www.evolvedlotus.com"
+    },
+    {
+      id: "lotusreplies",
+      owner: "EvolvedLotus",
+      name: {
+        client: "LotusReplies — Smarter Replies, More Engagement",
+        brand: "LotusReplies — AI Reply Engine (Freemium SaaS)",
+        creator: "LotusReplies — Gemini-Powered Reply Generator"
+      },
+      stage: "live",
+      platforms: ["Twitter/X", "Web App"],
+      goal: {
+        client: "Writes on-brand replies to X posts in seconds so you can engage more without the writer's block.",
+        brand: "Helps people grow on X by generating better replies faster, tuned to their goal and tone.",
+        creator: "Lets you reply to more posts and grow engagement without spending all day writing."
+      },
+      metric: {
+        client: "Replies in seconds",
+        brand: "Freemium + Stripe tiers",
+        creator: "Gemini API, real-time"
+      },
+      brief: {
+        Platform: "tools.evolvedlotus.com",
+        Goal: "Faster, on-brand X engagement",
+        Outcome: "Live tool, 5 free uses/day + premium",
+        Stack: "Gemini API, Stripe, web app"
+      },
+      link: "https://tools.evolvedlotus.com"
+    },
+    {
+      id: "evlbot",
+      owner: "EvolvedLotus",
+      name: {
+        client: "EVL Discord Bot — Run Your Community on Autopilot",
+        brand: "EVL Discord Bot — Economy & Management Platform",
+        creator: "EVL Discord Bot — Web-Dashboard-First Bot"
+      },
+      stage: "live",
+      platforms: ["Discord", "Web Dashboard"],
+      goal: {
+        client: "Keeps your Discord server active and engaged with rewards, tasks, and moderation on autopilot.",
+        brand: "Helps community owners run and monetize their servers without manual day-to-day management.",
+        creator: "Runs your whole server's economy and engagement so you can focus on the community, not commands."
+      },
+      metric: {
+        client: "Community on autopilot",
+        brand: "Free tier + premium subs",
+        creator: "No-code web CMS"
+      },
+      brief: {
+        Platform: "Discord + web dashboard",
+        Goal: "Hands-off community management",
+        Outcome: "Live economy/tasks/mod system",
+        Stack: "Discord API, Gemini AI, web CMS"
+      },
+      link: "https://www.evolvedlotus.com"
+    },
+    {
+      id: "lotuscut",
+      owner: "EvolvedLotus",
+      name: {
+        client: "LotusCut — Edit Video by Editing Text",
+        brand: "LotusCut — Offline AI Video Editor (Desktop)",
+        creator: "LotusCut — Whisper-Powered Text-Based Editor"
+      },
+      stage: "live",
+      platforms: ["Windows", "Offline AI"],
+      goal: {
+        client: "Cuts your video editing time down by letting you edit footage as easily as editing text.",
+        brand: "Helps creators turn long footage into captioned, vertical clips far faster than a normal editor.",
+        creator: "Lets you edit by deleting words instead of scrubbing a timeline, so editing takes minutes."
+      },
+      metric: {
+        client: "Edit in minutes, not hours",
+        brand: "Free tier + premium suite",
+        creator: "100% offline Whisper"
+      },
+      brief: {
+        Platform: "Windows desktop app",
+        Goal: "Text-based, offline video editing",
+        Outcome: "Live — v1.0.0 stable, free",
+        Stack: "Whisper (offline), Auto-Editor"
+      },
+      link: "https://tools.evolvedlotus.com/lotuscut/"
+    },
+    {
+      id: "thisweeksyt",
+      owner: "EvolvedLotus",
+      name: {
+        client: "This Week's YouTube — See What's Trending Now",
+        brand: "ThisWeeksYT — Trending YouTube Discovery Tool",
+        creator: "ThisWeeksYT — AI Trend Research for Creators"
+      },
+      stage: "live",
+      platforms: ["YouTube", "Web App"],
+      goal: {
+        client: "Shows you what's trending on YouTube right now so your content rides the wave instead of chasing it.",
+        brand: "Helps creators find trending topics early so they make content that's more likely to take off.",
+        creator: "Surfaces what's trending so you spend less time researching and more time making content."
+      },
+      metric: {
+        client: "Ride the trend early",
+        brand: "Real-time discovery tool",
+        creator: "AI trend analysis"
+      },
+      brief: {
+        Platform: "tools.evolvedlotus.com",
+        Goal: "Surface trending YouTube content",
+        Outcome: "Active tool, dedicated subdomain",
+        Stack: "YouTube data, AI analysis, web app"
+      },
+      link: "https://tools.evolvedlotus.com"
+    },
+    {
+      id: "evlblog",
+      owner: "EvolvedLotus",
+      name: {
+        client: "EvolvedLotus Blog — Content That Gets Found",
+        brand: "EvolvedLotus Blog — SEO Content Authority",
+        creator: "EvolvedLotus Blog — A Real SEO Content Engine"
+      },
+      stage: "results",
+      platforms: ["Blog", "SEO", "AdSense"],
+      goal: {
+        client: "Pulls in the right audience from search and warms them up before they ever see the tools.",
+        brand: "Drives free, compounding SEO traffic into the product funnel and earns ad revenue on its own.",
+        creator: "Brings in steady search traffic that you can monetize and funnel toward your products."
+      },
+      metric: {
+        client: "Found in search",
+        brand: "SEO funnel + AdSense",
+        creator: "Documented SEO pipeline"
+      },
+      brief: {
+        Platform: "blog.evolvedlotus.com",
+        Goal: "Own the search results",
+        Outcome: "Live content & SEO hub",
+        Stack: "SEO, content ops, AdSense"
+      },
+      link: "https://blog.evolvedlotus.com"
+    },
+    {
+      id: "sbc",
+      owner: "EvolvedLotus",
+      name: {
+        client: "SBC | RSS — A Media Brand in the Portfolio",
+        brand: "SBC | RSS — Acquired Media Brand (its own product line)",
+        creator: "SBC | RSS — Running an Acquired Brand's Stack"
+      },
+      stage: "live",
+      platforms: ["Media Brand", "Blog", "RSS"],
+      goal: {
+        client: "An acquired media brand we operate as its own identity, home to its own slate of products.",
+        brand: "Expands the portfolio through acquisition &mdash; a bought brand kept distinct, with products under it.",
+        creator: "Shows how to acquire an existing brand and grow its blog, showroom, and product lineup."
+      },
+      metric: {
+        client: "Acquired & operated",
+        brand: "Own brand, own products",
+        creator: "Acquisition, integrated"
+      },
+      brief: {
+        Platform: "SBC blog + product line",
+        Goal: "Operate an acquired media brand",
+        Outcome: "Live and actively run",
+        Stack: "Blogger, RSS, web"
+      },
+      link: "https://sbc-media.blogspot.com/"
+    },
+    {
+      id: "stackshowroom",
+      owner: "SBC | RSS",
+      name: {
+        client: "Stack Showroom — A Storefront for the Picks",
+        brand: "Stack Showroom — SBC's Product Showroom Front End",
+        creator: "Stack Showroom — Netlify-Hosted Showroom Site"
+      },
+      stage: "live",
+      platforms: ["Web", "Netlify"],
+      goal: {
+        client: "Puts the brand's curated products and picks in front of the right people in a clean storefront.",
+        brand: "Gives SBC a polished place to showcase and distribute its product picks to an audience.",
+        creator: "Turns a curated list of picks into a clean storefront people can actually browse and buy from."
+      },
+      metric: {
+        client: "Curated storefront",
+        brand: "SBC's showroom front end",
+        creator: "Netlify-hosted"
+      },
+      brief: {
+        Platform: "stack-showroom.netlify.app",
+        Goal: "Showcase the brand's picks",
+        Outcome: "Live showroom site",
+        Stack: "Web, Netlify"
+      },
+      link: "https://stack-showroom.netlify.app/"
+    },
+    {
+      id: "corepulse",
+      owner: "SBC | RSS",
+      name: {
+        client: "CorePulse — A Game People Open Every Day",
+        brand: "CorePulse — Telegram Mini-App Game (under SBC)",
+        creator: "CorePulse — Telegram Game on React + Supabase"
+      },
+      stage: "live",
+      platforms: ["Telegram", "Web App"],
+      goal: {
+        client: "Keeps players coming back daily with a collectible planet-and-pets game, raffles, and a stars shop.",
+        brand: "Builds a sticky daily-play audience inside Telegram and monetizes it through a Stars economy.",
+        creator: "Turns Telegram into a daily game habit with collecting, leaderboards, and prize pools."
+      },
+      metric: {
+        client: "Daily-habit gameplay",
+        brand: "Stars economy + raffles",
+        creator: "React + Three.js + Supabase"
+      },
+      brief: {
+        Platform: "Telegram Mini-App",
+        Goal: "A sticky daily-play loop",
+        Outcome: "Live: planets, pets, leaderboard",
+        Stack: "React, Three.js, Supabase, Stars"
+      },
+      link: "https://t.me/CorePulseGameBot"
+    },
+    {
+      id: "monetifygram",
+      owner: "SBC | RSS",
+      name: {
+        client: "MonetifyGram — Let Creators Monetize Telegram",
+        brand: "MonetifyGram — Multi-Tenant Telegram SaaS (under SBC)",
+        creator: "MonetifyGram — Multi-Tenant Bot Platform on Flask"
+      },
+      stage: "live",
+      platforms: ["Telegram", "SaaS"],
+      goal: {
+        client: "Lets you monetize your Telegram channels &mdash; your own bot posts content and earns you ad revenue.",
+        brand: "Helps creators turn their Telegram channels into income, with each user getting their own bot.",
+        creator: "Gives you a bot that posts to your channels and makes money from them without manual work."
+      },
+      metric: {
+        client: "Creators earn on Telegram",
+        brand: "Multi-tenant, tiered SaaS",
+        creator: "Flask + Postgres, per-user bots"
+      },
+      brief: {
+        Platform: "Telegram (SaaS platform)",
+        Goal: "Per-creator bots + monetization",
+        Outcome: "Live multi-tenant platform",
+        Stack: "Flask, Postgres, Monetag, Railway"
+      },
+      link: "https://monetifygram.biz/"
+    },
+    {
+      id: "kingdomsiege",
+      owner: "Personal",
+      name: {
+        client: "Kingdom Siege — Make Your TikTok Lives Interactive",
+        brand: "Kingdom Siege — Gift-Powered Live Game (built, not public)",
+        creator: "Kingdom Siege — TikTok Live Game on Electron + Phaser"
+      },
+      stage: "built",
+      platforms: ["TikTok Live", "Electron"],
+      goal: {
+        client: "Turns your TikTok Lives into a game where viewers pick a side and send gifts to help their team win.",
+        brand: "Makes TikTok Lives more interactive and profitable by tying gifts directly to live gameplay.",
+        creator: "Lets viewers play along with your Live by sending gifts, driving engagement and gift revenue."
+      },
+      metric: {
+        client: "Lives that fight back",
+        brand: "Gifts drive the gameplay",
+        creator: "Electron + Phaser 3"
+      },
+      brief: {
+        Platform: "TikTok Live (OBS overlay)",
+        Goal: "Turn gifts into live gameplay",
+        Outcome: "Built & playable — not public yet",
+        Stack: "Electron, Phaser 3, tiktok-live-connector"
+      },
+      demo: "assets/kingdomsiegedemo.mp4",
+      link: "#contact"
+    },
+    {
+      id: "wallpapertask",
+      owner: "Personal",
+      name: {
+        client: "WallpaperTask — Your To-Dos, On Your Desktop",
+        brand: "WallpaperTask — Notion-Synced Desktop Task Manager",
+        creator: "WallpaperTask — Wallpaper Engine + Notion Sync"
+      },
+      stage: "idea",
+      platforms: ["Desktop", "Notion"],
+      goal: {
+        client: "Keeps your to-do list in front of you on your desktop wallpaper, always synced with Notion.",
+        brand: "Helps people actually stay on top of tasks by putting them where they can't be ignored.",
+        creator: "Puts your Notion tasks right on your wallpaper so you see them every time you're at your PC."
+      },
+      metric: {
+        client: "Tasks on your wallpaper",
+        brand: "Two-way Notion sync",
+        creator: "Python + Wallpaper Engine"
+      },
+      brief: {
+        Platform: "Windows desktop",
+        Goal: "Tasks on the desktop, synced to Notion",
+        Outcome: "In progress — not public yet",
+        Stack: "Python, Notion API, Wallpaper Engine, DPAPI"
+      },
+      link: "#contact"
+    }
+  ];
+
+  let current = "client";
+
+  const personasEl = document.getElementById("personas");
+  const pitchEl = document.getElementById("pitch");
+  const boardEl = document.getElementById("board");
+  const boardTitleEl = document.getElementById("boardTitle");
+
+  const DECOR = {
+    evolvedlotus: { paper: "", fasten: "tape", doodle: true },
+    lotusreplies: { paper: "", fasten: "clip" },
+    evlbot: { paper: "", fasten: "pin" },
+    lotuscut: { paper: "", fasten: "clip" },
+    thisweeksyt: { paper: "", fasten: "tape" },
+    evlblog: { paper: "", fasten: "tape", doodle: true },
+    sbc: { paper: "", fasten: "pin" },
+    stackshowroom: { paper: "", fasten: "clip" },
+    corepulse: { paper: "", fasten: "pin" },
+    monetifygram: { paper: "", fasten: "tape" },
+    kingdomsiege: { paper: "", fasten: "tape", crossOut: { Outcome: "Going public soon" } },
+    wallpapertask: { paper: "", fasten: "clip", crossOut: { Outcome: "Going public soon" } }
+  };
+
+  const tilts = {};
+  PROJECTS.forEach(function (p, i) {
+    const seq = [-1.1, 0.6, -0.3, 1.4, -0.7];
+    tilts[p.id] = seq[i % seq.length] + "deg";
+  });
+
+  let layout = null;
+
+  function defaultLayout() {
+    const map = {};
+    STAGES.forEach(function (s) { map[s.key] = []; });
+    PROJECTS.forEach(function (p) { map[p.stage].push(p.id); });
+    return map;
+  }
+
+  function render() {
+    const cfg = PERSONAS[current];
+    boardTitleEl.textContent = cfg.title;
+    pitchEl.innerHTML = cfg.pitch;
+    if (!layout) layout = defaultLayout();
+
+    boardEl.innerHTML = "";
+    cfg.order.forEach(function (stageKey) {
+      const stage = STAGES.find(function (s) { return s.key === stageKey; });
+      const ids = layout[stageKey] || [];
+
+      const col = document.createElement("div");
+      col.className = "col";
+      col.dataset.stage = stageKey;
+      col.style.viewTransitionName = "col-" + stageKey;
+
+      const head = document.createElement("div");
+      head.className = "col-head";
+      head.innerHTML =
+        '<div class="name">' + stage.label + '</div>' +
+        '<div class="count">' + ids.length + '</div>';
+      col.appendChild(head);
+
+      const lane = document.createElement("div");
+      lane.className = "lane";
+      lane.dataset.stage = stageKey;
+
+      if (ids.length === 0) {
+        const empty = document.createElement("div");
+        empty.className = "empty";
+        empty.textContent = "Drop a card here.";
+        lane.appendChild(empty);
+      }
+
+      ids.forEach(function (id) {
+        const p = PROJECTS.find(function (x) { return x.id === id; });
+        if (p) lane.appendChild(buildCard(p));
+      });
+
+      col.appendChild(lane);
+      boardEl.appendChild(col);
+    });
+
+    wireDrag();
+  }
+
+  function buildCard(p) {
+    const d = DECOR[p.id] || {};
+    const card = document.createElement("div");
+    card.className = "card paper-" + (d.fasten || "tape") + (d.paper ? " " + d.paper : "");
+    card.dataset.id = p.id;
+    card.style.setProperty("--tilt", tilts[p.id]);
+    card.style.viewTransitionName = "card-" + p.id;
+    card.setAttribute("draggable", "true");
+
+    const tags = p.platforms.map(function (pl, i) {
+      return '<span class="tag ' + (i === 0 ? 'platform' : '') + '">' + pl + '</span>';
+    }).join("");
+
+    const briefRows = Object.keys(p.brief).map(function (k) {
+      const co = d.crossOut && d.crossOut[k];
+      const val = co
+        ? '<span><del>' + co + '</del><span class="fix">' + p.brief[k] + '</span></span>'
+        : '<span>' + p.brief[k] + '</span>';
+      return '<div class="row"><span>' + k + '</span>' + val + '</div>';
+    }).join("");
+
+    const doodle = d.doodle
+      ? '<svg class="doodle doodle-underline" viewBox="0 0 90 12"><path d="M2 8 Q 22 2 44 7 T 88 5"/></svg>'
+      : '';
+
+    const ownerClass = p.owner === "EvolvedLotus" ? "own-evl"
+      : p.owner === "SBC | RSS" ? "own-sbc"
+      : "own-personal";
+    const owner = p.owner
+      ? '<div class="owner ' + ownerClass + '">' + p.owner + '</div>'
+      : '';
+
+    const demoBtn = p.demo
+      ? '<button class="link demo-btn" data-demo="' + p.demo + '" data-title="' + p.name[current].replace(/"/g, "&quot;") + '">▶ Watch demo</button>'
+      : '';
+    const workLink = p.link && p.link !== "#contact"
+      ? '<a class="link" href="' + p.link + '" target="_blank" rel="noopener">See the work</a>'
+      : '';
+
+    card.innerHTML =
+      '<span class="fasten"></span>' +
+      owner +
+      '<div class="tags">' + tags + '</div>' +
+      '<h4>' + p.name[current] + '</h4>' +
+      '<div class="goal">' + p.goal[current] + '</div>' +
+      '<div class="metric-line"><span class="metric">' + p.metric[current] + '</span>' + doodle + '</div>' +
+      '<div class="detail">' + briefRows +
+        '<div class="actions">' + demoBtn + workLink + '</div>' +
+      '</div>';
+
+    card.addEventListener("click", function (e) {
+      const demo = e.target.closest(".demo-btn");
+      if (demo) {
+        e.stopPropagation();
+        openDemo(demo.dataset.demo, demo.dataset.title);
+        return;
+      }
+      if (e.target.closest("a")) return;
+      if (card.dataset.moved === "1") { card.dataset.moved = ""; return; }
+      card.classList.toggle("open");
+    });
+
+    return card;
+  }
+
+  function openDemo(src, title) {
+    const modal = document.getElementById("demoModal");
+    const video = document.getElementById("demoVideo");
+    const cap = document.getElementById("demoTitle");
+    cap.textContent = title || "Demo";
+    video.src = src;
+    modal.classList.add("show");
+    video.currentTime = 0;
+    const play = video.play();
+    if (play && play.catch) play.catch(function () {});
+  }
+
+  function closeDemo() {
+    const modal = document.getElementById("demoModal");
+    const video = document.getElementById("demoVideo");
+    video.pause();
+    video.removeAttribute("src");
+    video.load();
+    modal.classList.remove("show");
+  }
+
+  let dragId = null;
+
+  function wireDrag() {
+    const cards = boardEl.querySelectorAll(".card");
+    Array.prototype.forEach.call(cards, function (card) {
+      card.addEventListener("dragstart", function () {
+        dragId = card.dataset.id;
+        card.classList.add("dragging");
+      });
+      card.addEventListener("dragend", function () {
+        card.classList.remove("dragging");
+        dragId = null;
+        document.querySelectorAll(".col.drop-target").forEach(function (c) { c.classList.remove("drop-target"); });
+      });
+    });
+
+    const cols = boardEl.querySelectorAll(".col");
+    Array.prototype.forEach.call(cols, function (col) {
+      col.addEventListener("dragover", function (e) {
+        e.preventDefault();
+        col.classList.add("drop-target");
+      });
+      col.addEventListener("dragleave", function () {
+        col.classList.remove("drop-target");
+      });
+      col.addEventListener("drop", function (e) {
+        e.preventDefault();
+        col.classList.remove("drop-target");
+        if (!dragId) return;
+        const target = col.dataset.stage;
+        Object.keys(layout).forEach(function (k) {
+          layout[k] = layout[k].filter(function (id) { return id !== dragId; });
+        });
+        layout[target].push(dragId);
+        const moved = dragId;
+        render();
+        const el = boardEl.querySelector('.card[data-id="' + moved + '"]');
+        if (el) el.dataset.moved = "1";
+      });
+    });
+  }
+
+  function setPersona(persona) {
+    if (persona === current) return;
+    current = persona;
+    layout = defaultLayout();
+    Array.prototype.forEach.call(personasEl.children, function (btn) {
+      btn.classList.toggle("active", btn.dataset.persona === persona);
+    });
+    if (document.startViewTransition) {
+      document.startViewTransition(render);
+    } else {
+      render();
+    }
+  }
+
+  personasEl.addEventListener("click", function (e) {
+    const btn = e.target.closest(".pbtn");
+    if (btn) setPersona(btn.dataset.persona);
+  });
+
+  document.getElementById("demoClose").addEventListener("click", closeDemo);
+  document.getElementById("demoModal").addEventListener("click", function (e) {
+    if (e.target.dataset.close) closeDemo();
+  });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") closeDemo();
+  });
+
+  render();
+</script>
+</body>
+</html>

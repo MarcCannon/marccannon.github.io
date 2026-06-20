@@ -612,12 +612,24 @@
 
   .demo-box video {
     display: block;
+    object-fit: contain;
+    background: #000;
+  }
+
+  /* Portrait (9:16) — sized by height, default */
+  .demo-box.portrait video {
     height: min(82vh, calc((100vw - 48px) * 16 / 9));
     width: auto;
     max-width: 100%;
     aspect-ratio: 9 / 16;
-    object-fit: contain;
-    background: #000;
+  }
+
+  /* Landscape (16:9) — sized by width */
+  .demo-box.landscape video {
+    width: min(92vw, calc((82vh - 44px) * 16 / 9));
+    height: auto;
+    max-height: 82vh;
+    aspect-ratio: 16 / 9;
   }
 
   .card .detail .row del {
@@ -857,6 +869,7 @@
         Stack: "MV3, Gemini, Firebase Auth, Netlify"
       },
       demo: "assets/lotusrepliesextdemo.mp4",
+      demoOrient: "landscape",
       link: "https://tools.evolvedlotus.com"
     },
     {
@@ -1110,6 +1123,7 @@
         Stack: "Electron, Phaser 3, tiktok-live-connector"
       },
       demo: "assets/kingdomsiegedemo.mp4",
+      demoOrient: "portrait",
       link: "#contact"
     },
     {
@@ -1259,7 +1273,7 @@
       : '';
 
     const demoBtn = p.demo
-      ? '<button class="link demo-btn" data-demo="' + p.demo + '" data-title="' + p.name[current].replace(/"/g, "&quot;") + '">▶ Watch demo</button>'
+      ? '<button class="link demo-btn" data-demo="' + p.demo + '" data-orient="' + (p.demoOrient || "portrait") + '" data-title="' + p.name[current].replace(/"/g, "&quot;") + '">▶ Watch demo</button>'
       : '';
     const workLink = p.link && p.link !== "#contact"
       ? '<a class="link" href="' + p.link + '" target="_blank" rel="noopener">See the work</a>'
@@ -1280,7 +1294,7 @@
       const demo = e.target.closest(".demo-btn");
       if (demo) {
         e.stopPropagation();
-        openDemo(demo.dataset.demo, demo.dataset.title);
+        openDemo(demo.dataset.demo, demo.dataset.title, demo.dataset.orient);
         return;
       }
       if (e.target.closest("a")) return;
@@ -1291,11 +1305,14 @@
     return card;
   }
 
-  function openDemo(src, title) {
+  function openDemo(src, title, orient) {
     const modal = document.getElementById("demoModal");
+    const box = modal.querySelector(".demo-box");
     const video = document.getElementById("demoVideo");
     const cap = document.getElementById("demoTitle");
     cap.textContent = title || "Demo";
+    box.classList.remove("portrait", "landscape");
+    box.classList.add(orient === "landscape" ? "landscape" : "portrait");
     video.src = src;
     modal.classList.add("show");
     video.currentTime = 0;

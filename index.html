@@ -632,6 +632,157 @@
     aspect-ratio: 16 / 9;
   }
 
+  .card .early-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: inherit;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--paper);
+    background: var(--accent);
+    border: none;
+    border-radius: 225px 12px 220px 14px / 14px 200px 12px 225px;
+    padding: 7px 14px;
+    margin-top: 12px;
+    cursor: pointer;
+    transform: rotate(-0.6deg);
+    transition: background 0.15s ease, transform 0.15s ease;
+  }
+
+  .card .early-btn:hover {
+    background: var(--primary-dark);
+    transform: rotate(0deg) translateY(-1px);
+  }
+
+  .signup-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+
+  .signup-modal.show { display: flex; }
+
+  .signup-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(17,24,39,0.78);
+    backdrop-filter: blur(3px);
+  }
+
+  .signup-box {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 480px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 220px 10px 200px 12px / 12px 180px 10px 210px;
+    padding: 30px 30px 26px;
+    transform: rotate(-0.5deg);
+    box-shadow: 4px 6px 0 rgba(24,20,16,0.08), 0 30px 70px -20px rgba(0,0,0,0.55);
+  }
+
+  .signup-box::after {
+    content: "";
+    position: absolute;
+    top: -13px;
+    left: 50%;
+    width: 110px;
+    height: 28px;
+    transform: translateX(-50%) rotate(-2.5deg);
+    background: rgba(245,158,11,0.5);
+    border-left: 1px dashed rgba(160,120,30,0.25);
+    border-right: 1px dashed rgba(160,120,30,0.25);
+  }
+
+  .signup-close {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    background: none;
+    border: none;
+    font-size: 26px;
+    line-height: 1;
+    color: var(--soft);
+    cursor: pointer;
+    padding: 0 4px;
+  }
+
+  .signup-close:hover { color: var(--ink); }
+
+  .signup-box .eyebrow {
+    display: inline-block;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent-ink);
+    font-weight: 600;
+  }
+
+  .signup-box h3 {
+    font-family: "Fraunces", serif;
+    margin: 10px 0;
+    font-size: 27px;
+    line-height: 1.05;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+  }
+
+  .signup-box .signup-lede {
+    margin: 0;
+    font-size: 14px;
+    color: var(--soft);
+    line-height: 1.6;
+  }
+
+  .signup-option {
+    margin-top: 18px;
+    padding-top: 18px;
+    border-top: 1px dashed var(--line);
+  }
+
+  .signup-option h4 {
+    font-family: "Fraunces", serif;
+    margin: 0 0 6px;
+    font-size: 17px;
+    font-weight: 700;
+  }
+
+  .signup-option p {
+    margin: 0 0 12px;
+    font-size: 13.5px;
+    color: var(--soft);
+    line-height: 1.6;
+  }
+
+  .signup-option .go {
+    display: inline-block;
+    padding: 9px 18px;
+    font-size: 13.5px;
+    font-weight: 700;
+    text-decoration: none;
+    color: var(--paper);
+    background: var(--accent);
+    border-radius: 225px 12px 220px 14px / 14px 200px 12px 225px;
+    transform: rotate(-0.6deg);
+    transition: background 0.15s ease, transform 0.15s ease;
+  }
+
+  .signup-option .go:hover {
+    background: var(--primary-dark);
+    transform: rotate(0deg) translateY(-1px);
+  }
+
+  .signup-option .go.alt { background: var(--ink); }
+  .signup-option .go.alt:hover { background: var(--secondary); }
+
+  .signup-option .scribble { margin-top: 10px; }
+
   .card .detail .row del {
     color: var(--line-strong);
     text-decoration-color: var(--accent);
@@ -756,6 +907,29 @@
       <button class="demo-close" id="demoClose" aria-label="Close">&times;</button>
     </div>
     <video id="demoVideo" controls playsinline preload="metadata"></video>
+  </div>
+</div>
+
+<div class="signup-modal" id="signupModal" role="dialog" aria-modal="true" aria-labelledby="signupHeading">
+  <div class="signup-backdrop" data-close="1"></div>
+  <div class="signup-box">
+    <button class="signup-close" id="signupClose" aria-label="Close">&times;</button>
+    <span class="eyebrow">StreamrMatch &middot; coming soon</span>
+    <h3 id="signupHeading">Get in <em class="marker">before</em> the doors open.</h3>
+    <p class="signup-lede">StreamrMatch is built and almost ready to launch. Two ways to be part of it:</p>
+
+    <div class="signup-option">
+      <h4>Early Access Signups</h4>
+      <p>Be one of the first creators and brands on the marketplace. Sign up and you&rsquo;ll get in ahead of the crowd when the doors open.</p>
+      <a class="go" href="https://docs.google.com/forms/d/e/1FAIpQLSdCj-HOnPkDRWvXP3XhNQtY3yt97iZsqT8bnHezuUjDF6A0Ew/viewform?usp=dialog" target="_blank" rel="noopener">Sign up for early access</a>
+    </div>
+
+    <div class="signup-option">
+      <h4>Want to help us launch?</h4>
+      <p>Contribute by grabbing a subscription on our website &mdash; you&rsquo;ll unlock the premium features of our tools today, and you&rsquo;ll be rewarded once StreamrMatch is up.</p>
+      <a class="go alt" href="https://tools.evolvedlotus.com/premium" target="_blank" rel="noopener">Contribute &amp; go premium</a>
+      <div class="scribble">contributors get rewarded at launch &#128588;</div>
+    </div>
   </div>
 </div>
 
@@ -896,7 +1070,8 @@
       },
       demo: "assets/streamrmatchdemo.mp4",
       demoOrient: "landscape",
-      link: "https://t.co/NxXkTiSSRe"
+      link: "https://t.co/NxXkTiSSRe",
+      signup: true
     },
     {
       id: "evlbot",
@@ -1296,6 +1471,10 @@
       ? '<a class="link" href="' + p.link + '" target="_blank" rel="noopener">See the work</a>'
       : '';
 
+    const earlyBtn = p.signup
+      ? '<button class="early-btn">&#128640; Get early access</button>'
+      : '';
+
     card.innerHTML =
       '<span class="fasten"></span>' +
       owner +
@@ -1303,11 +1482,17 @@
       '<h4>' + p.name[current] + '</h4>' +
       '<div class="goal">' + p.goal[current] + '</div>' +
       '<div class="metric-line"><span class="metric">' + p.metric[current] + '</span>' + doodle + '</div>' +
+      earlyBtn +
       '<div class="detail">' + briefRows +
         '<div class="actions">' + demoBtn + workLink + '</div>' +
       '</div>';
 
     card.addEventListener("click", function (e) {
+      if (e.target.closest(".early-btn")) {
+        e.stopPropagation();
+        openSignup();
+        return;
+      }
       const demo = e.target.closest(".demo-btn");
       if (demo) {
         e.stopPropagation();
@@ -1344,6 +1529,14 @@
     video.removeAttribute("src");
     video.load();
     modal.classList.remove("show");
+  }
+
+  function openSignup() {
+    document.getElementById("signupModal").classList.add("show");
+  }
+
+  function closeSignup() {
+    document.getElementById("signupModal").classList.remove("show");
   }
 
   let dragId = null;
@@ -1411,8 +1604,12 @@
   document.getElementById("demoModal").addEventListener("click", function (e) {
     if (e.target.dataset.close) closeDemo();
   });
+  document.getElementById("signupClose").addEventListener("click", closeSignup);
+  document.getElementById("signupModal").addEventListener("click", function (e) {
+    if (e.target.dataset.close) closeSignup();
+  });
   document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape") closeDemo();
+    if (e.key === "Escape") { closeDemo(); closeSignup(); }
   });
 
   render();

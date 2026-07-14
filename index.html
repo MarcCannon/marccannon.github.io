@@ -1531,12 +1531,18 @@
     modal.classList.remove("show");
   }
 
+  const SIGNUP_HASH = "#streamrmatch";
+
   function openSignup() {
     document.getElementById("signupModal").classList.add("show");
+    if (location.hash !== SIGNUP_HASH) history.pushState(null, "", SIGNUP_HASH);
   }
 
   function closeSignup() {
-    document.getElementById("signupModal").classList.remove("show");
+    const modal = document.getElementById("signupModal");
+    if (!modal.classList.contains("show")) return;
+    modal.classList.remove("show");
+    if (location.hash === SIGNUP_HASH) history.pushState(null, "", location.pathname + location.search);
   }
 
   let dragId = null;
@@ -1612,7 +1618,14 @@
     if (e.key === "Escape") { closeDemo(); closeSignup(); }
   });
 
+  window.addEventListener("hashchange", function () {
+    if (location.hash === SIGNUP_HASH) openSignup();
+    else closeSignup();
+  });
+
   render();
+
+  if (location.hash === SIGNUP_HASH) openSignup();
 </script>
 </body>
 </html>
